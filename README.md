@@ -1,30 +1,41 @@
 # Solar System Simulator
 
-A real-time, interactive 3D solar system simulator built with Three.js and TypeScript. Features N-body gravitational physics, real planet textures, orbital mechanics, and a real-time mode that can initialize bodies from cached NASA/JPL Horizons state vectors.
+A real-time, interactive 3D solar system simulator built with Three.js and TypeScript. Features N-body gravitational physics, a procedurally animated Sun, physically-based atmospheres, real spacecraft flying their actual JPL trajectories, and a real-time mode driven by cached NASA/JPL Horizons state vectors.
+
+<p align="center">
+  <img src="docs/screenshots/hero-wide.jpg" alt="Full solar system view with lit orbit rings, procedural Sun, and starfield" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/saturn-rings.jpg" alt="Saturn with sun-lit, shadowed rings" width="32%">
+  <img src="docs/screenshots/sun-corona.jpg" alt="Procedurally animated Sun with corona and lens flare" width="32%">
+  <img src="docs/screenshots/earth-closeup.jpg" alt="Earth with real-time clouds, city lights, and day/night terminator" width="32%">
+</p>
+<p align="center">
+  <img src="docs/screenshots/jwst.jpg" alt="James Webb Space Telescope model, flying its real trajectory at Sun-Earth L2" width="49%">
+</p>
 
 ## Features
 
-- **N-Body Physics** -- Full gravitational simulation with RK4 (Runge-Kutta 4th order) and Velocity Verlet integrators. All 23 bodies interact gravitationally.
-- **23 Celestial Bodies** -- Sun, 8 planets, Pluto, Halley's Comet, Earth's Moon, 4 Galilean moons (Io, Europa, Ganymede, Callisto), and 7 Saturn moons (Mimas, Enceladus, Tethys, Dione, Rhea, Titan, Iapetus).
-- **Real Planet Textures** -- High-resolution texture maps for all planets and major moons sourced from NASA, USGS, and Solar System Scope.
-- **Horizons Real-Time Mode** -- Positions planets, major moons, Pluto, and Halley's Comet from a browser-loaded NASA/JPL Horizons vector cache for 2024-2028, with Hermite interpolation between samples. Dates outside the cache fall back to JPL approximate Keplerian elements.
+- **N-Body Physics** -- Full gravitational simulation with RK4 (Runge-Kutta 4th order) and Velocity Verlet integrators, plus an optional 1PN relativistic correction that reproduces Mercury's real 43"/century perihelion precession.
+- **28 Bodies** -- Sun, 8 planets, Pluto, Halley's Comet, Earth's Moon, 4 Galilean moons, 7 Saturn moons, and 5 real spacecraft (Voyager 1 & 2, New Horizons, Parker Solar Probe, JWST) flying their actual JPL Horizons trajectories.
+- **Procedural Sun** -- Animated 3D-noise photosphere with granulation, faculae, physically correct limb darkening, and a drifting corona.
+- **Physically-Based Atmospheres** -- Rayleigh/Mie scattering on Earth, Venus, Mars, and Titan; real-time Earth clouds with cast shadows, ocean specular glint, and city lights on the dark side.
+- **60,000 Real Asteroids** -- GPU-propagated from actual JPL Small-Body Database orbital elements -- the Kirkwood gaps and Jupiter's Trojan clouds emerge naturally.
+- **Lit Saturn Rings** -- Sun-shaded rings with an analytic planet shadow and backlit forward scattering.
+- **Horizons Real-Time Mode** -- Positions planets, moons, and spacecraft from a browser-loaded NASA/JPL Horizons vector cache (2020-2035), with cubic Hermite interpolation. Boots directly into the current real-world date.
 - **Ephemeris Cache Tooling** -- `npm run generate-ephemeris` regenerates the Horizons vector cache from the public JPL API.
-- **Earth Day/Night Cycle** -- Custom GLSL shader blends day and night textures based on Sun direction, with city lights visible on the dark side.
-- **Realistic Rotation** -- All bodies rotate at their real sidereal periods. Axial tilts are applied (Earth at 23.44 degrees, Saturn at 26.73 degrees, Uranus at 97.77 degrees, etc.).
-- **Saturn's Rings** -- Textured ring system with correct UV mapping, tilted with the planet.
-- **Planetary Atmospheres** -- Subtle atmospheric glow on Earth, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, and Titan.
+- **Realistic Rotation** -- All bodies rotate at their real sidereal periods with correct axial tilts.
+- **Mission Planner** -- Porkchop-plot delta-v planner using a universal-variable Lambert solver; launch a probe on a real, N-body-integrated transfer trajectory.
+- **Eclipse & Event Finder** -- Scans the ephemeris for upcoming solar/lunar eclipses, conjunctions, and oppositions, then flies the camera to watch them happen.
 - **Orbit Visualization** -- Predicted orbital paths drawn as rings, with moon orbits attached to parent planets.
-- **Interactive UI** -- Tweakpane-based control panel with tabs for simulation, camera, body selection, visuals, and info.
-- **God Mode** -- Click to spawn new bodies with custom mass, radius, and velocity. Drag to set initial velocity direction.
-- **Body Selection** -- Click any planet to select it and view its data card (mass, radius, velocity, distance from Sun, orbital period, escape velocity).
-- **Focus Camera** -- Double-click a planet label to lock the camera onto it.
-- **Log Scale View** -- Toggle between linear and logarithmic scale to see the entire solar system or zoom into inner planets.
-- **Bloom Post-Processing** -- UnrealBloomPass makes the Sun glow realistically.
-- **Asteroid Belt** -- Instanced mesh rendering of a denser, inclined, color-varied asteroid belt between Mars and Jupiter.
-- **Live Event Scan** -- Overlay with closest major-body pair, tightest sun-centric alignment, fastest major orbit, and most eccentric bound orbit.
-- **Transfer Planning Estimates** -- Selected planet data cards include rough Earth-to-target Hohmann transfer delta-v, flight time, and phase-angle information.
+- **Interactive UI** -- Tweakpane-based control panel with tabs for simulation, camera, body selection, visuals, and info, plus a cinematic camera director and guided tour mode.
+- **God Mode** -- Click to spawn new bodies, including exact Lagrange-point Trojan drops.
+- **Body Selection** -- Click any planet or spacecraft to select it and view its data card.
+- **Log / Real Scale Views** -- Toggle between educational, logarithmic, and true-physical-scale views.
+- **Live Event Scan & Conservation HUD** -- Closest-pair/conjunction tracking plus energy, angular-momentum, and barycenter drift readouts.
 - **Collision Detection** -- Bodies merge on collision, conserving momentum.
-- **Trail Rendering** -- Distance-based trail sampling that works correctly at any time scale.
+- **Save / Load** -- Export or import the full simulation state, with autosave.
 
 ## Getting Started
 
