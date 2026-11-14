@@ -30,6 +30,22 @@ import { SpawnPanel } from './ui/SpawnPanel';
 
 const lunarEmbed = new URLSearchParams(window.location.search).get('lunarEmbed') === '1';
 const lunarTourIds = new Set(['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','moon']);
+let suppressTourSelection = false;
+let lastMoonSignalAt = 0;
+function requestLunarExplore(): void {
+  if (!lunarEmbed || window.parent === window) return;
+  const requestedOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
+  if (!requestedOrigin) return;
+  try {
+    const target = new URL(requestedOrigin);
+    if (target.origin !== requestedOrigin ||
+        (target.protocol !== 'https:' && target.hostname !== 'localhost')) return;
+    const now = Date.now();
+    if (now - lastMoonSignalAt < 700) return;
+    lastMoonSignalAt = now;
+    window.parent.postMessage({ type: 'lunar-navigator:open-explore', body: 'moon' }, target.origin);
+  } catch { /* missing/untrusted parent origin: do not send */ }
+}
 
 // ---------------------------------------------------------------------------
 // Shared mutable state — all subsystems read from these objects each frame
@@ -153,6 +169,7 @@ const bodySelector = new BodySelector(
 );
 
 bodySelector.onBodySelected = (body) => {
+  if (lunarEmbed && body?.state.id === 'moon' && !suppressTourSelection) requestLunarExplore();
   if (body) audio.selectPing();
   if (cameraConfig.focusMode && body) {
     cameraConfig.focusBodyId = body.state.id;
@@ -568,11 +585,17 @@ eventsPanel.onEventsChanged = (events) => transportBar.setEvents(events);
 
 const tour = new TourController(sceneManager, () => bodies, lunarEmbed);
 tour.onSelectBody = (b) => {
-  bodySelector.selectBody(b);
+  suppressTourSelection = true;
+  try { bodySelector.selectBody(b); }
+  finally { suppressTourSelection = false; }
   cameraConfig.focusMode = true;
   cameraConfig.focusBodyId = b.state.id;
 };
 transportBar.onTour = () => (tour.active ? tour.stop() : tour.start());
+tour.onReachMoon = () => {
+  // Let the final cinematic focus begin, then enter the scientific explorer.
+  window.setTimeout(requestLunarExplore, 1000);
+};
 // An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
 if (lunarEmbed) tour.start();
 
