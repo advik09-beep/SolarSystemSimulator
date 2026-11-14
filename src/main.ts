@@ -600,7 +600,8 @@ tour.onStopChanged = (bodyId) => {
 };
 tour.onReachMoon = () => {
   // Let the final cinematic focus begin, then enter the scientific explorer.
-  window.setTimeout(requestLunarExplore, 1000);
+  // Give visitors time to read the sourced Moon and south-pole caption.
+  window.setTimeout(requestLunarExplore, 12000);
 };
 // An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
 if (lunarEmbed) {
