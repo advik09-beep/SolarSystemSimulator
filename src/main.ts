@@ -28,6 +28,9 @@ import { UIManager } from './ui/UIManager';
 import { DateOverlay } from './ui/DateOverlay';
 import { SpawnPanel } from './ui/SpawnPanel';
 
+const lunarEmbed = new URLSearchParams(window.location.search).get('lunarEmbed') === '1';
+const lunarTourIds = new Set(['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','moon']);
+
 // ---------------------------------------------------------------------------
 // Shared mutable state — all subsystems read from these objects each frame
 // ---------------------------------------------------------------------------
@@ -145,7 +148,8 @@ const bodySelector = new BodySelector(
   () => bodies,
   cameraConfig,
   sceneManager,
-  () => renderConfig.logScale
+  () => renderConfig.logScale,
+  lunarEmbed ? lunarTourIds : null,
 );
 
 bodySelector.onBodySelected = (body) => {
@@ -212,8 +216,10 @@ spawnPanel.onSpawn = (req) => {
 // ---------------------------------------------------------------------------
 function buildAllLabels(): void {
   sceneManager.buildLabels(bodies, (body) => {
+    if (lunarEmbed && !lunarTourIds.has(body.state.id)) return;
     bodySelector.selectBody(body);
   }, (body) => {
+    if (lunarEmbed && !lunarTourIds.has(body.state.id)) return;
     cameraConfig.focusMode = true;
     cameraConfig.focusBodyId = body.state.id;
     sceneManager.focusOn(body);
@@ -560,13 +566,15 @@ eventsPanel.getStartDate = () => new Date(simDate);
 eventsPanel.onJump = jumpToEvent;
 eventsPanel.onEventsChanged = (events) => transportBar.setEvents(events);
 
-const tour = new TourController(sceneManager, () => bodies);
+const tour = new TourController(sceneManager, () => bodies, lunarEmbed);
 tour.onSelectBody = (b) => {
   bodySelector.selectBody(b);
   cameraConfig.focusMode = true;
   cameraConfig.focusBodyId = b.state.id;
 };
 transportBar.onTour = () => (tour.active ? tour.stop() : tour.start());
+// An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
+if (lunarEmbed) tour.start();
 
 /**
  * Drop a small asteroid at the exact Sun–<secondary> L4/L5 point with the
