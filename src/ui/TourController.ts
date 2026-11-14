@@ -69,6 +69,7 @@ export class TourController {
   onExit?: () => void;
   /** Only fires at the Moon stop in the embedded, simplified guided tour. */
   onReachMoon?: () => void;
+  onStopChanged?: (bodyId: string) => void;
 
   constructor(sceneManager: SceneManager, getBodies: () => CelestialBody[], private readonly lunarEmbed = false) {
     this.sceneManager = sceneManager;
@@ -115,6 +116,7 @@ export class TourController {
     const stop = this.stops[next]!;
     const body = this.getBodies().find(b => b.state.id === stop.bodyId)!;
 
+    this.onStopChanged?.(stop.bodyId);
     this.titleEl.textContent = this.lunarEmbed ? stop.title : `${next + 1}/${this.stops.length} — ${stop.title}`;
     this.textEl.textContent = this.lunarEmbed ? '' : stop.text;
     this.onSelectBody?.(body);

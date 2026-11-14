@@ -592,6 +592,12 @@ tour.onSelectBody = (b) => {
   cameraConfig.focusBodyId = b.state.id;
 };
 transportBar.onTour = () => (tour.active ? tour.stop() : tour.start());
+tour.onStopChanged = (bodyId) => {
+  if (!lunarEmbed || window.parent === window) return;
+  const targetOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
+  if (!targetOrigin) return;
+  window.parent.postMessage({ type: 'lunar-navigator:tour-stop', bodyId }, targetOrigin);
+};
 tour.onReachMoon = () => {
   // Let the final cinematic focus begin, then enter the scientific explorer.
   window.setTimeout(requestLunarExplore, 1000);
