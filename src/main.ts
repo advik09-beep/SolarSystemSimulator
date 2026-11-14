@@ -1069,10 +1069,10 @@ function animate(): void {
 
   // --- UI refresh ---
   const simDateStr = formatSimDate(simEpoch, simTimeElapsed);
-  ui.update(simTimeElapsed, bodies, simDateStr);
+  if (!lunarEmbed) ui.update(simTimeElapsed, bodies, simDateStr);
 
   // --- Planet data card ---
-  ui.updatePlanetCard(bodies);
+  if (!lunarEmbed) ui.updatePlanetCard(bodies);
 
   // --- Render ---
   sceneManager.render();
