@@ -79,6 +79,7 @@ export class TourController {
     this.textEl = this.captionEl.querySelector('.tour-text')!;
     document.getElementById('tour-prev')!.addEventListener('click', () => this.step(-1));
     document.getElementById('tour-next')!.addEventListener('click', () => this.step(1));
+    document.getElementById('tour-restart')!.addEventListener('click', () => this.start());
     document.getElementById('tour-exit')!.addEventListener('click', () => this.stop());
   }
 
