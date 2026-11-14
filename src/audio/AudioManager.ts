@@ -11,8 +11,10 @@ export class AudioManager {
   private padFilter: BiquadFilterNode | null = null;
   private muted: boolean;
 
-  constructor() {
-    this.muted = localStorage.getItem('sss-muted') === '1';
+  // Embeds start muted on every visit without overwriting the standalone
+  // simulator's saved audio preference.
+  constructor(private readonly persistPreference = true) {
+    this.muted = !persistPreference || localStorage.getItem('sss-muted') === '1';
     const boot = () => {
       this._init();
       window.removeEventListener('pointerdown', boot);
@@ -26,7 +28,7 @@ export class AudioManager {
 
   setMuted(muted: boolean): void {
     this.muted = muted;
-    localStorage.setItem('sss-muted', muted ? '1' : '0');
+    if (this.persistPreference) localStorage.setItem('sss-muted', muted ? '1' : '0');
     if (this.master && this.ctx) {
       this.master.gain.linearRampToValueAtTime(
         muted ? 0 : 0.14, this.ctx.currentTime + 0.4);

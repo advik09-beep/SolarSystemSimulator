@@ -8,7 +8,7 @@
       }
     </script>
     <style>
-      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(#tour-caption):not(script) {
+      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(#tour-caption):not(#lunar-audio-toggle):not(script) {
         display: none !important;
       }
     </style>
@@ -801,6 +801,35 @@
         text-align: center;
       }
       #tour-caption.visible { display: block; }
+      /* D29: visible embedded-only speaker toggle. Standalone controls unchanged. */
+      #lunar-audio-toggle { display: none; }
+      html[data-lunar-embed] #lunar-audio-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 450;
+        min-width: 125px;
+        min-height: 42px;
+        padding: 8px 13px;
+        background: rgba(12, 26, 46, 0.93);
+        color: #ecf5ff;
+        border: 1px solid rgba(149, 195, 241, 0.8);
+        border-radius: 10px;
+        font: 650 13px Inter, system-ui, sans-serif;
+        cursor: pointer;
+        box-shadow: 0 4px 22px rgba(0,0,0,.35);
+      }
+      html[data-lunar-embed] #lunar-audio-toggle:hover {
+        background: rgba(34, 63, 101, .97);
+      }
+      html[data-lunar-embed] #lunar-audio-toggle:focus-visible {
+        outline: 2px solid #b8e0ff;
+        outline-offset: 3px;
+      }
+
       /* Embedded navigator: names and simple tour controls only. No facts,
          counts, stats, external links, menus, or simulator timelines. */
       html[data-lunar-embed] #tour-caption {
@@ -1093,6 +1122,7 @@
         <button id="tour-exit">Exit</button>
       </div>
     </div>
+    <button id="lunar-audio-toggle" type="button" aria-pressed="false" aria-label="Turn on simulator sound" title="Enable sound">🔇 Sound off</button>
     <div id="palette-backdrop"></div>
     <div id="palette">
       <input id="palette-input" type="text" placeholder="Jump to body or action…" autocomplete="off" />

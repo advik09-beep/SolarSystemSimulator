@@ -438,8 +438,24 @@ ui.onRealTimeToggle = async (enabled) => {
 // ---------------------------------------------------------------------------
 // Audio, transport bar, timeline, events, tour, palette, share links
 // ---------------------------------------------------------------------------
-const audio = new AudioManager();
-ui.onMuteToggle = () => audio.toggleMuted();
+const audio = new AudioManager(!lunarEmbed);
+const embeddedSoundButton = lunarEmbed
+  ? document.getElementById('lunar-audio-toggle') as HTMLButtonElement | null
+  : null;
+function updateEmbeddedSoundButton(): void {
+  if (!embeddedSoundButton) return;
+  const enabled = !audio.isMuted;
+  embeddedSoundButton.textContent = enabled ? '🔊 Sound on' : '🔇 Sound off';
+  embeddedSoundButton.setAttribute('aria-pressed', String(enabled));
+  embeddedSoundButton.setAttribute('aria-label', enabled ? 'Mute simulator sound' : 'Turn on simulator sound');
+  embeddedSoundButton.title = enabled ? 'Mute sound' : 'Enable sound';
+}
+ui.onMuteToggle = () => {
+  audio.toggleMuted();
+  updateEmbeddedSoundButton();
+};
+embeddedSoundButton?.addEventListener('click', () => ui.onMuteToggle?.());
+updateEmbeddedSoundButton();
 
 // In-place date application: light enough for 60 Hz timeline scrubbing —
 // copies positions/velocities into the existing bodies instead of the full
