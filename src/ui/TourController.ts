@@ -40,6 +40,21 @@ const STOPS: TourStop[] = [
     text: 'Returns every ~76 years; next perihelion 2061. Time-warp there and watch its ion and dust tails unfurl near the Sun.' },
 ];
 
+// Embedded Lunar Navigator edition: only the Sun, eight planets and Moon.
+// No facts, figures or external links in this focused navigation mode.
+const LUNAR_STOPS: TourStop[] = [
+  { bodyId: 'sun', title: 'Sun', text: '', dwellSec: 5 },
+  { bodyId: 'mercury', title: 'Mercury', text: '', dwellSec: 5 },
+  { bodyId: 'venus', title: 'Venus', text: '', dwellSec: 5 },
+  { bodyId: 'earth', title: 'Earth', text: '', dwellSec: 5 },
+  { bodyId: 'mars', title: 'Mars', text: '', dwellSec: 5 },
+  { bodyId: 'jupiter', title: 'Jupiter', text: '', dwellSec: 5 },
+  { bodyId: 'saturn', title: 'Saturn', text: '', dwellSec: 5 },
+  { bodyId: 'uranus', title: 'Uranus', text: '', dwellSec: 5 },
+  { bodyId: 'neptune', title: 'Neptune', text: '', dwellSec: 5 },
+  { bodyId: 'moon', title: 'Moon', text: '', dwellSec: 5 },
+];
+
 export class TourController {
   private sceneManager: SceneManager;
   private getBodies: () => CelestialBody[];
@@ -47,14 +62,18 @@ export class TourController {
   private titleEl: HTMLElement;
   private textEl: HTMLElement;
   private index = -1;
+  private readonly stops: TourStop[];
   private dwellTimer: number | null = null;
 
   onSelectBody?: (body: CelestialBody) => void;
   onExit?: () => void;
+  /** Only fires at the Moon stop in the embedded, simplified guided tour. */
+  onReachMoon?: () => void;
 
-  constructor(sceneManager: SceneManager, getBodies: () => CelestialBody[]) {
+  constructor(sceneManager: SceneManager, getBodies: () => CelestialBody[], private readonly lunarEmbed = false) {
     this.sceneManager = sceneManager;
     this.getBodies = getBodies;
+    this.stops = lunarEmbed ? LUNAR_STOPS : STOPS;
     this.captionEl = document.getElementById('tour-caption')!;
     this.titleEl = this.captionEl.querySelector('.tour-title')!;
     this.textEl = this.captionEl.querySelector('.tour-text')!;
@@ -82,23 +101,30 @@ export class TourController {
     this._clearTimer();
     let next = this.index + dir;
     // Skip stops whose body doesn't exist (e.g. merged away)
-    while (next >= 0 && next < STOPS.length) {
-      const body = this.getBodies().find(b => b.state.id === STOPS[next]!.bodyId);
+    while (next >= 0 && next < this.stops.length) {
+      const body = this.getBodies().find(b => b.state.id === this.stops[next]!.bodyId);
       if (body) break;
       next += dir;
     }
-    if (next < 0 || next >= STOPS.length) {
+    if (next < 0 || next >= this.stops.length) {
       this.stop();
       return;
     }
     this.index = next;
-    const stop = STOPS[next]!;
+    const stop = this.stops[next]!;
     const body = this.getBodies().find(b => b.state.id === stop.bodyId)!;
 
-    this.titleEl.textContent = `${next + 1}/${STOPS.length} — ${stop.title}`;
-    this.textEl.textContent = stop.text;
+    this.titleEl.textContent = this.lunarEmbed ? stop.title : `${next + 1}/${this.stops.length} — ${stop.title}`;
+    this.textEl.textContent = this.lunarEmbed ? '' : stop.text;
     this.onSelectBody?.(body);
     this.sceneManager.focusOn(body);
+
+    if (this.lunarEmbed && stop.bodyId === 'moon') {
+      // Navigation to our actual Moon explorer is wired separately by the
+      // embedding host; the tour deliberately terminates on our Moon.
+      this.onReachMoon?.();
+      return;
+    }
 
     this.dwellTimer = window.setTimeout(() => {
       if (this.active) this.step(1);
