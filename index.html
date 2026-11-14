@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      // Minimal presentation mode for the Lunar Landing Site Navigator iframe.
+      if (new URLSearchParams(location.search).get('lunarEmbed') === '1') {
+        document.documentElement.dataset.lunarEmbed = '';
+      }
+    </script>
+    <style>
+      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(script) {
+        display: none !important;
+      }
+    </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solar System Simulator</title>
