@@ -45,7 +45,8 @@ export class BodySelector {
     getBodies: () => CelestialBody[],
     cameraConfig: CameraConfig,
     sceneManager: SceneManager,
-    getLogScale: () => boolean
+    getLogScale: () => boolean,
+    private readonly allowedIds: ReadonlySet<string> | null = null,
   ) {
     this.camera       = camera;
     this.renderer     = renderer;
@@ -156,6 +157,7 @@ export class BodySelector {
   get selectedBody(): CelestialBody | null { return this._selectedBody; }
 
   selectBody(body: CelestialBody | null): void {
+    if (body && this.allowedIds && !this.allowedIds.has(body.state.id)) return;
     this._selectedBody = body;
     this.onBodySelected?.(body);
   }
@@ -180,7 +182,8 @@ export class BodySelector {
     if (hits.length === 0) return null;
 
     const hitMesh = hits[0]!.object as THREE.Mesh;
-    return this.getBodies().find(b => b.mesh === hitMesh) ?? null;
+    const body = this.getBodies().find(b => b.mesh === hitMesh) ?? null;
+    return body && this.allowedIds && !this.allowedIds.has(body.state.id) ? null : body;
   }
 
   private _raycastEcliptic(e: MouseEvent): THREE.Vector3 | null {
