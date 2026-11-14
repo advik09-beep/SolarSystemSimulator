@@ -597,7 +597,14 @@ tour.onReachMoon = () => {
   window.setTimeout(requestLunarExplore, 1000);
 };
 // An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
-if (lunarEmbed) tour.start();
+if (lunarEmbed) {
+  simConfig.paused = true; // D24: still opening scene, no automatic tour
+  window.addEventListener('message', (event: MessageEvent) => {
+    const parentOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
+    if (!parentOrigin || event.origin !== parentOrigin || event.source !== window.parent) return;
+    if (event.data?.type === 'lunar-navigator:start-tour') tour.start();
+  });
+}
 
 /**
  * Drop a small asteroid at the exact Sun–<secondary> L4/L5 point with the
