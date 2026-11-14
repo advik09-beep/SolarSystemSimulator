@@ -603,6 +603,18 @@ if (lunarEmbed) {
     const parentOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
     if (!parentOrigin || event.origin !== parentOrigin || event.source !== window.parent) return;
     if (event.data?.type === 'lunar-navigator:start-tour') tour.start();
+    if (event.data?.type === 'lunar-navigator:set-clock') {
+      const value = event.data.utc;
+      if (typeof value !== 'string' || !/^20\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.000Z$/.test(value)) return;
+      const date = new Date(value);
+      if (!Number.isFinite(date.getTime())) return;
+      simEpoch = date;
+      simTimeElapsed = 0;
+      simDate = date;
+      simConfig.paused = true;
+      // This upstream physics scene does not provide validated historical
+      // planetary positions. The parent displays that limitation explicitly.
+    }
   });
 }
 
