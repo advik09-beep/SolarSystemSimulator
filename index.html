@@ -8,7 +8,7 @@
       }
     </script>
     <style>
-      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(script) {
+      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(#tour-caption):not(script) {
         display: none !important;
       }
     </style>
@@ -801,6 +801,29 @@
         text-align: center;
       }
       #tour-caption.visible { display: block; }
+      /* Embedded navigator: names and simple tour controls only. No facts,
+         counts, stats, external links, menus, or simulator timelines. */
+      html[data-lunar-embed] #tour-caption {
+        bottom: 24px;
+        background: rgba(11, 23, 40, .95);
+        border: 1px solid rgba(150, 190, 236, .65);
+        width: min(360px, 90vw);
+        font-family: Inter, system-ui, sans-serif;
+        padding: 14px 17px;
+      }
+      html[data-lunar-embed] #tour-caption .tour-text { display: none !important; }
+      html[data-lunar-embed] #tour-caption .tour-title {
+        font-size: 19px;
+        font-weight: 700;
+        color: #eef7ff;
+        letter-spacing: .02em;
+      }
+      html[data-lunar-embed] #tour-caption .tour-nav button {
+        padding: 8px 14px;
+        font-family: inherit;
+        font-weight: 600;
+      }
+
       #tour-caption .tour-title { color: #ffd257; font-size: 15px; margin-bottom: 4px; }
       #tour-caption .tour-nav { margin-top: 8px; display: flex; gap: 8px; justify-content: center; }
       #tour-caption button {
