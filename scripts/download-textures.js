@@ -24,14 +24,8 @@ const DOWNLOADS = [
   { url: 'https://www.solarsystemscope.com/textures/download/2k_uranus.jpg', file: 'uranus.jpg' },
   { url: 'https://www.solarsystemscope.com/textures/download/2k_neptune.jpg', file: 'neptune.jpg' },
   // --- Pluto (planetpixelemporium) ---
-  { url: 'https://planetpixelemporium.com/download/download.php?plutomap2k.jpg', file: 'pluto.jpg' },
   // --- Jupiter moons (USGS Astrogeology — public domain) ---
-  { url: 'https://astrogeology.usgs.gov/ckan/dataset/f6924861-ce9c-490d-8a4b-7812a20f2de5/resource/a9fab679-8081-4144-9f58-45848836c8f5/download/full.jpg', file: 'io.jpg' },
-  { url: 'https://stevealbers.net/albers/sos/jupiter/europa/europa_rgb_cyl_juno.png', file: 'europa.png' },
-  { url: 'https://astrogeology.usgs.gov/ckan/dataset/e1422336-3291-4b65-b903-c942d53de073/resource/eb32abd7-fee2-47d1-9f96-9d7d8824cc3a/download/ganymede_voyager_galileossi_global_clrmosaic_1024.jpg', file: 'ganymede.jpg' },
-  { url: 'https://astrogeology.usgs.gov/ckan/dataset/a80abd68-7ed9-440e-829a-76376779164f/resource/ac628525-cb1c-4742-928b-5a0a60f372cd/download/callisto_voyager_galileossi_global_mosaic_1024.jpg', file: 'callisto.jpg' },
   // --- Titan (Cassini ISS — public domain) ---
-  { url: 'https://astrogeology.usgs.gov/ckan/dataset/8ee17e4e-26c6-4e22-9c23-bc9a4c7ed35e/resource/c3f3006c-3174-4716-920f-44f5dc749a4a/download/titan_iss_p19658_mosaic_global_1024.jpg', file: 'titan.jpg' },
 ];
 
 if (!fs.existsSync(TEXTURES_DIR)) {
