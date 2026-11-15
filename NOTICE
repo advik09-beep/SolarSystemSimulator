@@ -5,9 +5,11 @@ This is a modified fork of OzAILabs/SolarSystemSimulator (formerly SomaliSkinnyA
 https://github.com/OzAILabs/SolarSystemSimulator
 
 The upstream README states that its software is MIT licensed. No separate
-LICENSE file is included in the upstream repository. That README statement
-and upstream credit are preserved here; it does not override the licence
-for third-party textures.
+LICENSE file is included in the upstream repository. Standard MIT license
+terms: https://opensource.org/license/mit . This is a reference to the
+license named by upstream, not an independently issued license grant or
+an invented upstream copyright notice. Upstream credit is preserved here;
+the software license does not override the licenses of third-party textures.
 
 LUNLUX MODIFICATIONS
 --------------------
