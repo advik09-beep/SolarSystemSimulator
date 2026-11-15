@@ -599,7 +599,58 @@ eventsPanel.getStartDate = () => new Date(simDate);
 eventsPanel.onJump = jumpToEvent;
 eventsPanel.onEventsChanged = (events) => transportBar.setEvents(events);
 
+// Final embedded Tour stop: an anchored callout tracks the rendered Moon.
+// The two cues are deliberately separate: one points at the Moon, one is a button.
+const moonTourTarget = document.createElement('div');
+moonTourTarget.className = 'moon-tour-target';
+moonTourTarget.hidden = true;
+if (lunarEmbed) {
+  const label = document.createElement('span');
+  label.className = 'moon-tour-target-label';
+  label.textContent = 'Click here to go to the Moon';
+  const button = document.createElement('button');
+  button.className = 'moon-tour-target-button';
+  button.type = 'button';
+  button.textContent = 'Click here to go to the Moon';
+  button.addEventListener('click', requestLunarExplore);
+  moonTourTarget.append(label, button);
+  document.getElementById('canvas-container')?.appendChild(moonTourTarget);
+  const style = document.createElement('style');
+  style.textContent = `
+    .moon-tour-target { position:absolute; z-index:80; display:flex; flex-direction:column;
+      align-items:flex-start; gap:8px; max-width:285px; padding:10px 13px; border-radius:10px;
+      border:1px solid rgba(124,190,241,.8); background:rgba(9,19,34,.88); color:#ecf2ff;
+      box-shadow:0 10px 26px rgba(0,0,0,.55); pointer-events:auto; }
+    .moon-tour-target[hidden] { display:none !important; }
+    .moon-tour-target::before { content:""; position:absolute; left:-35px; top:50%; width:35px;
+      border-top:2px dashed #5aa9e6; transform:translateY(-50%); }
+    .moon-tour-target.flip::before { left:auto; right:-35px; }
+    .moon-tour-target-label { font:600 15px/1.3 Georgia,serif; color:#ecf2ff; }
+    .moon-tour-target-button { font:600 13px/1.2 system-ui,sans-serif; cursor:pointer;
+      color:#091322; background:#f2c14e; border:0; border-radius:6px; padding:10px 12px; }
+    .moon-tour-target-button:focus-visible { outline:3px solid white; outline-offset:3px; }
+  `;
+  document.head.append(style);
+}
+const updateMoonTourTarget = (): void => {
+  if (!lunarEmbed || moonTourTarget.hidden) return;
+  const moonBody = bodies.find(body => body.state.id === 'moon');
+  if (!moonBody) { moonTourTarget.hidden = true; return; }
+  const projected = moonBody.group.getWorldPosition(new THREE.Vector3()).project(sceneManager.camera);
+  const canvas = sceneManager.renderer.domElement;
+  if (projected.z < -1 || projected.z > 1) { moonTourTarget.style.visibility = 'hidden'; return; }
+  const x = (projected.x + 1) * canvas.clientWidth / 2;
+  const y = (1 - projected.y) * canvas.clientHeight / 2;
+  const flip = x > canvas.clientWidth - 340;
+  moonTourTarget.classList.toggle('flip', flip);
+  moonTourTarget.style.visibility = 'visible';
+  moonTourTarget.style.left = (x + (flip ? -36 : 36)) + 'px';
+  moonTourTarget.style.top = Math.max(90, Math.min(canvas.clientHeight - 90, y)) + 'px';
+  moonTourTarget.style.transform = flip ? 'translate(-100%, -50%)' : 'translate(0, -50%)';
+};
+
 const tour = new TourController(sceneManager, () => bodies, lunarEmbed);
+tour.onExit = () => { moonTourTarget.hidden = true; };
 tour.onSelectBody = (b) => {
   suppressTourSelection = true;
   try { bodySelector.selectBody(b); }
@@ -609,6 +660,7 @@ tour.onSelectBody = (b) => {
 };
 transportBar.onTour = () => (tour.active ? tour.stop() : tour.start());
 tour.onStopChanged = (bodyId) => {
+  if (lunarEmbed) moonTourTarget.hidden = bodyId !== 'moon';
   if (!lunarEmbed || window.parent === window) return;
   const targetOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
   if (!targetOrigin) return;
@@ -1137,6 +1189,7 @@ function animate(): void {
 
   // --- Render ---
   sceneManager.render();
+  updateMoonTourTarget();
 }
 
 animate();
