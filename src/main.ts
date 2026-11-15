@@ -439,6 +439,8 @@ ui.onRealTimeToggle = async (enabled) => {
 // Audio, transport bar, timeline, events, tour, palette, share links
 // ---------------------------------------------------------------------------
 const audio = new AudioManager(!lunarEmbed);
+// LunLux controls website music in its own shell; the embedded simulator is silent.
+if (lunarEmbed) document.getElementById('lunar-audio-toggle')?.remove();
 const embeddedSoundButton = lunarEmbed
   ? document.getElementById('lunar-audio-toggle') as HTMLButtonElement | null
   : null;
