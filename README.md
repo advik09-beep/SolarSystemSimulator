@@ -4,7 +4,7 @@ A real-time, interactive 3D solar system simulator built with Three.js and TypeS
 
 ## LunLux Tour — modified fork
 
-This repository is a **modified fork of [SomaliSkinnyAI/SolarSystemSimulator](https://github.com/SomaliSkinnyAI/SolarSystemSimulator)** used as the embedded **Tour in LunLux** (the lunar landing-site sunlight and Earth-contact explorer). The standalone simulator is retained, but `?lunarEmbed=1` switches to a simplified presentation mode.
+This repository is a **modified fork of [OzAILabs/SolarSystemSimulator (formerly SomaliSkinnyAI)](https://github.com/OzAILabs/SolarSystemSimulator)** used as the embedded **Tour in LunLux** (the lunar landing-site sunlight and Earth-contact explorer). The standalone simulator is retained, but `?lunarEmbed=1` switches to a simplified presentation mode.
 
 Changes in this fork:
 - An **embedded mode** with a ten-stop Tour: Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Moon.
@@ -62,7 +62,7 @@ The **twelve remaining texture images** in `public/textures/` are credited to **
 
 ```bash
 # Clone the repository
-git clone https://github.com/SomaliSkinnyAI/SolarSystemSimulator.git
+git clone https://github.com/OzAILabs/SolarSystemSimulator.git
 cd SolarSystemSimulator
 
 # Install dependencies
@@ -151,4 +151,4 @@ The Pluto, Europa, Io, Ganymede, Callisto and Titan texture files were removed f
 
 ## License and upstream credit
 
-The upstream project is **[SomaliSkinnyAI/SolarSystemSimulator](https://github.com/SomaliSkinnyAI/SolarSystemSimulator)**. Its README states **MIT** for the simulator software, and upstream does **not** provide a separate `LICENSE` file. This fork preserves that attribution and README statement. Do not treat the upstream software's MIT statement as a licence for separately sourced imagery: the 12 retained Solar System Scope images use **CC BY 4.0** as described in [NOTICE](NOTICE).
+The upstream project is **[OzAILabs/SolarSystemSimulator (formerly SomaliSkinnyAI)](https://github.com/OzAILabs/SolarSystemSimulator)**. Its README states **MIT** for the simulator software, and upstream does **not** provide a separate `LICENSE` file. This fork preserves that attribution and README statement. Do not treat the upstream software's MIT statement as a licence for separately sourced imagery: the 12 retained Solar System Scope images use **CC BY 4.0** as described in [NOTICE](NOTICE).
