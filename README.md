@@ -16,18 +16,7 @@ Changes in this fork:
 The **twelve remaining texture images** in `public/textures/` are credited to **Solar System Scope, CC BY 4.0** in [NOTICE](NOTICE). They are **not public-domain images**. These Tour customizations do not change NASA/JPL ephemeris or lunar terrain datasets used separately by LunLux.
 
 
-<p align="center">
-  <img src="docs/screenshots/hero-wide.jpg" alt="Full solar system view with lit orbit rings, procedural Sun, and starfield" width="100%">
-</p>
-
-<p align="center">
-  <img src="docs/screenshots/saturn-rings.jpg" alt="Saturn with sun-lit, shadowed rings" width="32%">
-  <img src="docs/screenshots/sun-corona.jpg" alt="Procedurally animated Sun with corona and lens flare" width="32%">
-  <img src="docs/screenshots/earth-closeup.jpg" alt="Earth with real-time clouds, city lights, and day/night terminator" width="32%">
-</p>
-<p align="center">
-  <img src="docs/screenshots/jwst.jpg" alt="James Webb Space Telescope model, flying its real trajectory at Sun-Earth L2" width="49%">
-</p>
+The LunLux Tour is available as part of the [live LunLux website](https://lunar-landing-hackathon.vercel.app/?tab=tour). Historical simulator showcase screenshots have been removed from this fork to avoid redistributing unverified legacy imagery.
 
 ## Features
 
