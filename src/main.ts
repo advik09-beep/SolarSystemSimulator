@@ -232,7 +232,10 @@ spawnPanel.onSpawn = (req) => {
 // Planet labels (CSS2D) — must be after bodySelector is created
 // ---------------------------------------------------------------------------
 function buildAllLabels(): void {
-  sceneManager.buildLabels(bodies, (body) => {
+  // In the LunLux embed, label only the ten guided-tour destinations.
+  // Keep other bodies rendered; do not attach CSS2D labels to them.
+  const labelBodies = lunarEmbed ? bodies.filter((body) => lunarTourIds.has(body.state.id)) : bodies;
+  sceneManager.buildLabels(labelBodies, (body) => {
     if (lunarEmbed && !lunarTourIds.has(body.state.id)) return;
     bodySelector.selectBody(body);
   }, (body) => {
