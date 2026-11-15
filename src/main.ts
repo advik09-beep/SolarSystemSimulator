@@ -624,15 +624,15 @@ if (lunarEmbed) {
   style.textContent = `
     .moon-tour-target { position:absolute; z-index:80; display:flex; flex-direction:column;
       align-items:flex-start; gap:8px; max-width:285px; padding:10px 13px; border-radius:10px;
-      border:1px solid rgba(124,190,241,.8); background:rgba(9,19,34,.88); color:#ecf2ff;
+      border:1px solid rgba(242,238,230,.26); background:rgba(28,28,30,.90); color:#F2EEE6;
       box-shadow:0 10px 26px rgba(0,0,0,.55); pointer-events:auto; }
     .moon-tour-target[hidden] { display:none !important; }
     .moon-tour-target::before { content:""; position:absolute; left:-35px; top:50%; width:35px;
-      border-top:2px dashed #5aa9e6; transform:translateY(-50%); }
+      border-top:2px dashed #A6A29B; transform:translateY(-50%); }
     .moon-tour-target.flip::before { left:auto; right:-35px; }
-    .moon-tour-target-label { font:600 15px/1.3 Georgia,serif; color:#ecf2ff; }
+    .moon-tour-target-label { font:600 15px/1.3 Georgia,serif; color:#F2EEE6; }
     .moon-tour-target-button { font:600 13px/1.2 system-ui,sans-serif; cursor:pointer;
-      color:#091322; background:#f2c14e; border:0; border-radius:6px; padding:10px 12px; }
+      color:#0A0A0B; background:#E8E4DA; border:0; border-radius:6px; padding:10px 12px; }
     .moon-tour-target-button:focus-visible { outline:3px solid white; outline-offset:3px; }
   `;
   document.head.append(style);

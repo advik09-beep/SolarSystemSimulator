@@ -983,6 +983,46 @@
         pointer-events: none;
       }
       body.photo-mode #photo-mode-hint { display: block; }
+
+      /* LunLux embed palette; standalone simulator styles remain unchanged. */
+      html[data-lunar-embed] body { background: #0A0A0B; color: #F2EEE6; }
+      html[data-lunar-embed] #tour-caption {
+        background: rgba(28,28,30,0.90);
+        border: 1px solid rgba(242,238,230,0.26);
+        color: #F2EEE6;
+        box-shadow: 0 14px 32px rgba(0,0,0,0.45);
+      }
+      html[data-lunar-embed] #tour-caption .tour-title { color: #F2EEE6; }
+      html[data-lunar-embed] #tour-caption .tour-text { color: #A6A29B; }
+      html[data-lunar-embed] #tour-caption .tour-nav button,
+      html[data-lunar-embed] #lunar-audio-toggle {
+        background: #E8E4DA; color: #0A0A0B; border: 1px solid #E8E4DA;
+      }
+      html[data-lunar-embed] #tour-caption .tour-nav button:hover,
+      html[data-lunar-embed] #lunar-audio-toggle:hover {
+        background: #F2EEE6; border-color: #F2EEE6;
+      }
+      html[data-lunar-embed] #tour-caption .tour-nav button:focus-visible,
+      html[data-lunar-embed] #lunar-audio-toggle:focus-visible {
+        outline: 2px solid #F2EEE6; outline-offset: 3px;
+      }
+      html[data-lunar-embed] .planet-label {
+        background: rgba(28,28,30,0.90); border-color: rgba(242,238,230,0.22);
+      }
+      html[data-lunar-embed] .planet-label:hover {
+        background: rgba(43,43,45,0.96); border-color: rgba(242,238,230,0.50);
+      }
+      html[data-lunar-embed] .planet-label .name { color: #F2EEE6; }
+      html[data-lunar-embed] .moon-label .name { color: #A6A29B; }
+      html[data-lunar-embed] .planet-label .pip {
+        background: #A6A29B !important; color: #A6A29B !important;
+      }
+      html[data-lunar-embed] .planet-label[data-body-id="sun"] .pip {
+        background: #F2C14E !important; color: #F2C14E !important;
+      }
+      html[data-lunar-embed] .planet-label[data-body-id="earth"] .pip {
+        background: #5AA9E6 !important; color: #5AA9E6 !important;
+      }
     </style>
   </head>
   <body>

@@ -292,7 +292,9 @@ export class SceneManager {
 
     // Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000005);
+    this.scene.background = new THREE.Color(
+      document.documentElement.hasAttribute('data-lunar-embed') ? 0x0A0A0B : 0x000005
+    );
 
     // Camera — start at linear-scale position (logScale is false by default)
     this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.001, 1e8);
@@ -997,6 +999,7 @@ export class SceneManager {
     for (const body of bodies) {
       const div = document.createElement('div');
       div.className = body.state.isMoon ? 'planet-label moon-label' : 'planet-label';
+      div.dataset.bodyId = body.state.id;
 
       const pip = document.createElement('span');
       pip.className = 'pip';
