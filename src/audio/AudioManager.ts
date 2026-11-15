@@ -15,6 +15,9 @@ export class AudioManager {
   // simulator's saved audio preference.
   constructor(private readonly persistPreference = true) {
     this.muted = !persistPreference || localStorage.getItem('sss-muted') === '1';
+    // In the LunLux embed, disable the old synthesized soundscape entirely.
+    // Standalone simulator audio is unchanged.
+    if (!persistPreference) return;
     const boot = () => {
       this._init();
       window.removeEventListener('pointerdown', boot);
@@ -27,6 +30,7 @@ export class AudioManager {
   get isMuted(): boolean { return this.muted; }
 
   setMuted(muted: boolean): void {
+    if (!this.persistPreference) { this.muted = true; return; }
     this.muted = muted;
     if (this.persistPreference) localStorage.setItem('sss-muted', muted ? '1' : '0');
     if (this.master && this.ctx) {
