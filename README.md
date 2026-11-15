@@ -149,6 +149,17 @@ The fork currently retains **12 image files from [Solar System Scope](https://ww
 
 The Pluto, Europa, Io, Ganymede, Callisto and Titan texture files were removed from the fork. The original simulator's earlier texture-source notes should not be interpreted as licences for images no longer supplied.
 
+## Astronomical catalogs and generated data
+
+The Tour's real-star catalog is a derived rendering table generated from the
+[Yale Bright Star Catalog conversion by Bretton Wade](https://github.com/brettonw/YaleBrightStarCatalog)
+(MIT, copyright 2016 Bretton Wade). Its asteroid table is generated from the
+[NASA/JPL Small-Body Database Query API](https://ssd-api.jpl.nasa.gov/doc/sbdb_query.html),
+and the 2020–2035 vector cache from the
+[NASA/JPL Horizons API](https://ssd-api.jpl.nasa.gov/doc/horizons.html).
+These source links and the transformation scripts are detailed in [NOTICE](NOTICE).
+They do not establish rights in the upstream simulator's *software*.
+
 ## License and upstream credit
 
 The upstream project is **[OzAILabs/SolarSystemSimulator (formerly SomaliSkinnyAI)](https://github.com/OzAILabs/SolarSystemSimulator)**. Its README states **MIT** for the simulator software, and upstream does **not** provide a separate `LICENSE` file. This fork preserves that attribution and README statement. Do not treat the upstream software's MIT statement as a licence for separately sourced imagery: the 12 retained Solar System Scope images use **CC BY 4.0** as described in [NOTICE](NOTICE).
