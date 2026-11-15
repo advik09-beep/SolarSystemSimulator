@@ -74,7 +74,8 @@ const renderConfig: RenderConfig = {
   exposure: 1.08,
   showLensflare: true,
   showGodRays: true,
-  showAsteroidBelt: true,
+  // Preserve the standalone simulator default, but make LunLux Tour fast by default.
+  showAsteroidBelt: !lunarEmbed,
   showSolarWind: false,
   showLagrangePoints: false,
   showGravityField: false,
@@ -461,6 +462,30 @@ ui.onMuteToggle = () => {
 };
 embeddedSoundButton?.addEventListener('click', () => ui.onMuteToggle?.());
 updateEmbeddedSoundButton();
+
+// Dedicated Tour control: visitors can opt in to the GPU-heavy asteroid belt.
+// This works independently of the standalone simulator's existing settings panel.
+const embeddedAsteroidButton = lunarEmbed
+  ? document.getElementById('lunar-asteroid-toggle') as HTMLButtonElement | null
+  : null;
+function syncAsteroidButton(): void {
+  if (!embeddedAsteroidButton) return;
+  const enabled = renderConfig.showAsteroidBelt;
+  embeddedAsteroidButton.textContent = enabled ? 'Asteroid belt: On' : 'Asteroid belt: Off';
+  embeddedAsteroidButton.setAttribute('aria-pressed', String(enabled));
+  embeddedAsteroidButton.setAttribute('aria-label', enabled
+    ? 'Hide asteroid belt to improve performance'
+    : 'Show asteroid belt (may reduce frame rate)');
+  embeddedAsteroidButton.title = enabled
+    ? 'Hide the asteroid belt to improve frame rate'
+    : 'Show about 60,000 simulated asteroid points (may reduce frame rate)';
+}
+embeddedAsteroidButton?.addEventListener('click', () => {
+  renderConfig.showAsteroidBelt = !renderConfig.showAsteroidBelt;
+  sceneManager.applyRenderConfig(renderConfig);
+  syncAsteroidButton();
+});
+syncAsteroidButton();
 
 // In-place date application: light enough for 60 Hz timeline scrubbing —
 // copies positions/velocities into the existing bodies instead of the full
@@ -1111,8 +1136,10 @@ function animate(): void {
     sceneManager.updateSolarWind(wallDt);
   }
 
-  // --- Asteroid swarm orbital clock (real elements, real dates) ---
-  sceneManager.updateAsteroidSwarm(dateToJulianTDB(simDate));
+  // --- Asteroid swarm orbital clock: skip work when hidden for performance ---
+  if (renderConfig.showAsteroidBelt && !renderConfig.logScale) {
+    sceneManager.updateAsteroidSwarm(dateToJulianTDB(simDate));
+  }
 
   // --- Comet tails (Halley) ---
   {

@@ -8,7 +8,7 @@
       }
     </script>
     <style>
-      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(#tour-caption):not(#lunar-audio-toggle):not(script) {
+      html[data-lunar-embed] body > :not(#canvas-container):not(#label-container):not(#tour-caption):not(#lunar-audio-toggle):not(#lunar-asteroid-toggle):not(script) {
         display: none !important;
       }
     </style>
@@ -1006,6 +1006,41 @@
       html[data-lunar-embed] #lunar-audio-toggle:focus-visible {
         outline: 2px solid #F2EEE6; outline-offset: 3px;
       }
+      /* LunLux Tour asteroid-belt toggle, outside the hidden standalone UI.
+         Top-right, below the host site's navigation; no overlap with Tour caption. */
+      #lunar-asteroid-toggle { display: none; }
+      html[data-lunar-embed] #lunar-asteroid-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 92px;
+        right: 20px;
+        z-index: 450;
+        min-width: 154px;
+        min-height: 42px;
+        padding: 8px 13px;
+        background: rgba(28,28,30,0.90);
+        color: #F2EEE6;
+        border: 1px solid rgba(242,238,230,0.42);
+        border-radius: 99px;
+        font: 600 13px Inter, system-ui, sans-serif;
+        cursor: pointer;
+        box-shadow: 0 4px 22px rgba(0,0,0,0.35);
+      }
+      html[data-lunar-embed] #lunar-asteroid-toggle:hover {
+        background: rgba(48,48,50,0.96);
+        border-color: #F2EEE6;
+      }
+      html[data-lunar-embed] #lunar-asteroid-toggle:focus-visible {
+        outline: 2px solid #F2EEE6;
+        outline-offset: 3px;
+      }
+      html[data-lunar-embed] #lunar-asteroid-toggle[aria-pressed="true"] {
+        background: #E8E4DA;
+        color: #0A0A0B;
+        border-color: #E8E4DA;
+      }
       html[data-lunar-embed] .planet-label {
         background: rgba(28,28,30,0.90); border-color: rgba(242,238,230,0.22);
       }
@@ -1163,6 +1198,7 @@
       </div>
     </div>
     <button id="lunar-audio-toggle" type="button" aria-pressed="false" aria-label="Turn on simulator sound" title="Enable sound">🔇 Sound off</button>
+    <button id="lunar-asteroid-toggle" type="button" aria-pressed="false" aria-label="Show asteroid belt (may reduce frame rate)" title="Show about 60,000 simulated asteroid points (may reduce frame rate)">Asteroid belt: Off</button>
     <div id="palette-backdrop"></div>
     <div id="palette">
       <input id="palette-input" type="text" placeholder="Jump to body or action…" autocomplete="off" />

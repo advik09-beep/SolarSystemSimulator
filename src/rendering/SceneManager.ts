@@ -232,6 +232,8 @@ export class SceneManager {
 
   // Real asteroid swarm (60k numbered asteroids, GPU-propagated)
   private asteroidSwarm!: AsteroidSwarm;
+  private asteroidSwarmLoading = false;
+  private asteroidSwarmVisible = false;
 
   // Solar wind
   private swPositions: Float32Array;
@@ -339,9 +341,9 @@ export class SceneManager {
     this.starField = new StarField();
     this.starField.addToScene(this.scene);
 
-    // Asteroid swarm (loads its element table asynchronously)
+    // Asteroid data are large. Do not fetch or allocate the 60k-point swarm
+    // until actually requested; LunLux embed starts with it disabled.
     this.asteroidSwarm = new AsteroidSwarm(this.scene);
-    void this.asteroidSwarm.load().then(() => this.applyRenderConfig(renderConfig));
 
     // Post-processing. The default EffectComposer target is non-multisampled,
     // which silently discards the canvas's antialias flag — pass an explicit
@@ -408,7 +410,7 @@ export class SceneManager {
   }
 
   // ---------------------------------------------------------------------------
-  // Asteroid belt — InstancedMesh, visual only
+  // Asteroid belt — GPU point swarm, visual only
   // ---------------------------------------------------------------------------
   /** Advance the asteroid swarm's orbital clock to the sim's Julian date. */
   updateAsteroidSwarm(jdTDB: number): void {
@@ -718,8 +720,21 @@ export class SceneManager {
     this.renderer.toneMappingExposure = cfg.exposure;
     this.lensflare.visible = cfg.showLensflare;
     this.godraysEnabled = cfg.showGodRays;
-    // Swarm positions live in linear scene coordinates — hide in log mode
-    this.asteroidSwarm.setVisible(cfg.showAsteroidBelt && !cfg.logScale);
+    // The swarm has a 60,000-point vertex shader, so hiding it must also
+    // prevent its draw calls and avoid its initial data/geometry allocation.
+    // A pending asynchronous load honors the newest toggle setting.
+    const showAsteroids = cfg.showAsteroidBelt && !cfg.logScale;
+    this.asteroidSwarmVisible = showAsteroids;
+    this.asteroidSwarm.setVisible(showAsteroids);
+    if (showAsteroids && !this.asteroidSwarmLoading) {
+      this.asteroidSwarmLoading = true;
+      void this.asteroidSwarm.load().then(() => {
+        this.asteroidSwarm.setVisible(this.asteroidSwarmVisible);
+      }).catch((error: unknown) => {
+        this.asteroidSwarmLoading = false;
+        console.warn('Asteroid belt unavailable:', error);
+      });
+    }
     if (this.swMesh)        this.swMesh.visible       = cfg.showSolarWind;
     if (this.gravFieldMesh) this.gravFieldMesh.visible = cfg.showGravityField;
     this.lagrangeSprites.forEach(s => {
@@ -1081,6 +1096,7 @@ export class SceneManager {
     this.clearOrbitRings();
     this.clearLabels();
     this.starField.dispose();
+    this.asteroidSwarm.dispose();
     this.renderer.dispose();
     this.composer.dispose();
   }
