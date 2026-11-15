@@ -614,55 +614,14 @@ tour.onStopChanged = (bodyId) => {
   if (!targetOrigin) return;
   window.parent.postMessage({ type: 'lunar-navigator:tour-stop', bodyId }, targetOrigin);
 };
-// D31: wait at the final stop for a deliberate click on the Moon.
-let finalMoonStop = false;
-tour.onReachMoon = () => { finalMoonStop = true; };
-const moonClickRay = new THREE.Raycaster();
-const moonClickPoint = new THREE.Vector2();
-let moonClickDown: { x: number; y: number } | null = null;
-if (lunarEmbed) {
-  const canvas = sceneManager.renderer.domElement;
-  canvas.addEventListener('pointerdown', (event: PointerEvent) => {
-    moonClickDown = { x: event.clientX, y: event.clientY };
-  });
-  canvas.addEventListener('pointerup', (event: PointerEvent) => {
-    if (!finalMoonStop || !moonClickDown ||
-        Math.hypot(event.clientX - moonClickDown.x, event.clientY - moonClickDown.y) > 6) return;
-    const moon = bodies.find(body => body.state.id === 'moon');
-    if (!moon) return;
-    const rect = canvas.getBoundingClientRect();
-    moonClickPoint.set((event.clientX - rect.left) / rect.width * 2 - 1,
-      -(event.clientY - rect.top) / rect.height * 2 + 1);
-    scene.updateMatrixWorld(true);
-    sceneManager.camera.updateMatrixWorld(true);
-    moonClickRay.setFromCamera(moonClickPoint, sceneManager.camera);
-    if (moonClickRay.intersectObject(moon.mesh, false).length) { requestLunarExplore(); return; }
-    // Some upstream display meshes are not raycastable from the camera side.
-    // Use their actual projected sphere as a fallback for the final visible Moon.
-    moon.mesh.geometry.computeBoundingSphere();
-    const sphere = moon.mesh.geometry.boundingSphere;
-    if (!sphere) return;
-    const center = moon.mesh.localToWorld(sphere.center.clone());
-    const scale = moon.mesh.getWorldScale(new THREE.Vector3());
-    const radius = sphere.radius * Math.max(scale.x, scale.y, scale.z);
-    const edge = new THREE.Vector3(1, 0, 0).applyQuaternion(sceneManager.camera.quaternion)
-      .multiplyScalar(radius).add(center).project(sceneManager.camera);
-    const projected = center.project(sceneManager.camera);
-    const cx = (projected.x + 1) * rect.width / 2 + rect.left;
-    const cy = (1 - projected.y) * rect.height / 2 + rect.top;
-    const pixelRadius = Math.hypot((edge.x - projected.x) * rect.width / 2,
-      (edge.y - projected.y) * rect.height / 2);
-    if (projected.z >= -1 && projected.z <= 1 &&
-        Math.hypot(event.clientX - cx, event.clientY - cy) <= pixelRadius) requestLunarExplore();
-  });
-}
+// D31: the final Moon stop waits for the existing Moon click to open Explore.
 // An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
 if (lunarEmbed) {
   simConfig.paused = true; // D24: still opening scene, no automatic tour
   window.addEventListener('message', (event: MessageEvent) => {
     const parentOrigin = new URLSearchParams(window.location.search).get('parentOrigin');
     if (!parentOrigin || event.origin !== parentOrigin || event.source !== window.parent) return;
-    if (event.data?.type === 'lunar-navigator:start-tour') { finalMoonStop = false; tour.start(); }
+    if (event.data?.type === 'lunar-navigator:start-tour') tour.start();
     if (event.data?.type === 'lunar-navigator:set-clock') {
       const value = event.data.utc;
       if (typeof value !== 'string' || !/^20\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.000Z$/.test(value)) return;
