@@ -1,8 +1,9 @@
 LunLux Tour — third-party attribution and fork notice
 ================================================
 
-This is a modified fork of the Solar System Simulator by SomaliSkinnyAI:
-https://github.com/SomaliSkinnyAI/SolarSystemSimulator
+This is a modified fork of OzAILabs/SolarSystemSimulator
+(formerly SomaliSkinnyAI):
+https://github.com/OzAILabs/SolarSystemSimulator
 
 The upstream README states that its software is MIT licensed. No separate
 LICENSE file is included in the upstream repository. That README statement
