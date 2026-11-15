@@ -688,6 +688,8 @@ if (lunarEmbed) {
       simTimeElapsed = 0;
       simDate = date;
       simConfig.paused = true;
+      // Update the visible date even if the embedded canvas has not resumed RAF.
+      dateOverlay.updateDisplay(date);
       // This upstream physics scene does not provide validated historical
       // planetary positions. The parent displays that limitation explicitly.
     }
