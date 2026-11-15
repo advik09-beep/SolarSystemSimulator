@@ -614,11 +614,7 @@ tour.onStopChanged = (bodyId) => {
   if (!targetOrigin) return;
   window.parent.postMessage({ type: 'lunar-navigator:tour-stop', bodyId }, targetOrigin);
 };
-tour.onReachMoon = () => {
-  // Let the final cinematic focus begin, then enter the scientific explorer.
-  // Give visitors time to read the sourced Moon and south-pole caption.
-  window.setTimeout(requestLunarExplore, 12000);
-};
+// D31: the final Moon stop waits for the existing Moon click to open Explore.
 // An embedded tour opens at the Sun; standalone OzAILabs functionality remains unchanged.
 if (lunarEmbed) {
   simConfig.paused = true; // D24: still opening scene, no automatic tour
