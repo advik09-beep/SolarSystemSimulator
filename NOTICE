@@ -1,0 +1,46 @@
+LunLux Tour — third-party attribution and fork notice
+================================================
+
+This is a modified fork of the Solar System Simulator by SomaliSkinnyAI:
+https://github.com/SomaliSkinnyAI/SolarSystemSimulator
+
+The upstream README states that its software is MIT licensed. No separate
+LICENSE file is included in the upstream repository. That README statement
+and upstream credit are preserved here; it does not override the licence
+for third-party textures.
+
+LUNLUX MODIFICATIONS
+--------------------
+This fork supplies the embedded Tour in LunLux, using ?lunarEmbed=1.
+Changes include: a guided ten-stop Sun/planet/Moon Tour; embedded-mode
+presentation with other body labels hidden; simulator control panels,
+statistics and timeline hidden; sound disabled; an embedded-mode warm
+neutral visual theme; a Moon click-through call to action; and removal
+of six third-party texture files for Pluto, Europa, Io, Ganymede,
+Callisto and Titan. Untextured bodies can still be rendered.
+
+SOLAR SYSTEM SCOPE IMAGERY — CREATIVE COMMONS ATTRIBUTION 4.0
+-------------------------------------------------------------
+Credit: Solar System Scope — Solar System Scope Textures
+Source: https://www.solarsystemscope.com/textures/
+Licence: Creative Commons Attribution 4.0 International (CC BY 4.0)
+Licence text: https://creativecommons.org/licenses/by/4.0/
+
+The following 12 texture images remain in public/textures/ and are
+attributed to Solar System Scope under CC BY 4.0:
+
+  sun.jpg                 mercury.jpg
+  venus.jpg               earth_day.jpg
+  earth_night.jpg         moon.jpg
+  mars.jpg                jupiter.jpg
+  saturn.jpg              saturn_rings.png
+  uranus.jpg              neptune.jpg
+
+These assets are not public domain. They are reused in a modified
+interactive Three.js simulator; their display, mapping onto 3D bodies,
+postprocessing, and presentation context may differ from the originals.
+The original image creators retain their applicable rights. Attribution
+is retained in this repository so the embedded Tour can credit them.
+
+The six removed textures — Pluto, Europa, Io, Ganymede, Callisto, Titan —
+are not distributed with this fork and are not covered by the above list.

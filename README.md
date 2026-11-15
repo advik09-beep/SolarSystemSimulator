@@ -2,6 +2,20 @@
 
 A real-time, interactive 3D solar system simulator built with Three.js and TypeScript. Features N-body gravitational physics, a procedurally animated Sun, physically-based atmospheres, real spacecraft flying their actual JPL trajectories, and a real-time mode driven by cached NASA/JPL Horizons state vectors.
 
+## LunLux Tour — modified fork
+
+This repository is a **modified fork of [SomaliSkinnyAI/SolarSystemSimulator](https://github.com/SomaliSkinnyAI/SolarSystemSimulator)** used as the embedded **Tour in LunLux** (the lunar landing-site sunlight and Earth-contact explorer). The standalone simulator is retained, but `?lunarEmbed=1` switches to a simplified presentation mode.
+
+Changes in this fork:
+- An **embedded mode** with a ten-stop Tour: Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Moon.
+- Non-tour object **labels hidden** in embedded mode; those spacecraft and other bodies remain visible when rendered.
+- Simulator control **panels, statistics and timeline hidden** in embedded mode.
+- Embedded sound **disabled**; the obsolete sound toggle is hidden/removed.
+- Six unsupported/disputed texture files **removed**: Pluto, Europa, Io, Ganymede, Callisto and Titan. Those bodies can render as untextured spheres or remain hidden.
+
+The **twelve remaining texture images** in `public/textures/` are credited to **Solar System Scope, CC BY 4.0** in [NOTICE](NOTICE). They are **not public-domain images**. These Tour customizations do not change NASA/JPL ephemeris or lunar terrain datasets used separately by LunLux.
+
+
 <p align="center">
   <img src="docs/screenshots/hero-wide.jpg" alt="Full solar system view with lit orbit rings, procedural Sun, and starfield" width="100%">
 </p>
@@ -54,7 +68,8 @@ cd SolarSystemSimulator
 # Install dependencies
 npm install
 
-# Download planet textures (NASA/USGS/Solar System Scope -- public domain)
+# The 12 retained Solar System Scope textures are already in public/textures/.
+# Optional re-download of these CC BY 4.0 assets (NOT public domain):
 npm run download-textures
 
 # Optional: refresh the 2024-2028 NASA/JPL Horizons vector cache
@@ -128,15 +143,12 @@ src/
 - **Vite** -- Dev server and bundler
 - **Tweakpane** v4 -- UI controls
 
-## Texture Sources
+## Texture Sources and attribution
 
-Planet textures are downloaded via `npm run download-textures` from:
+The fork currently retains **12 image files from [Solar System Scope](https://www.solarsystemscope.com/textures/)**, distributed under the **[Creative Commons Attribution 4.0 International licence](https://creativecommons.org/licenses/by/4.0/)**. These include the Sun, planet and Moon textures, Earth day/night maps and Saturn rings. See [NOTICE](NOTICE) for the complete file list, attribution and licence links.
 
-- [Solar System Scope](https://www.solarsystemscope.com/textures/) -- Sun, Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, Uranus, Neptune (CC BY 4.0)
-- [Planet Pixel Emporium](https://planetpixelemporium.com/) -- Pluto
-- [USGS Astrogeology](https://astrogeology.usgs.gov/) -- Io, Ganymede, Callisto, Titan (public domain)
-- [Steve Albers](https://stevealbers.net/albers/sos/sos.html) -- Europa 4K (Voyager/Galileo/Juno composite)
+The Pluto, Europa, Io, Ganymede, Callisto and Titan texture files were removed from the fork. The original simulator's earlier texture-source notes should not be interpreted as licences for images no longer supplied.
 
-## License
+## License and upstream credit
 
-MIT
+The upstream project is **[SomaliSkinnyAI/SolarSystemSimulator](https://github.com/SomaliSkinnyAI/SolarSystemSimulator)**. Its README states **MIT** for the simulator software, and upstream does **not** provide a separate `LICENSE` file. This fork preserves that attribution and README statement. Do not treat the upstream software's MIT statement as a licence for separately sourced imagery: the 12 retained Solar System Scope images use **CC BY 4.0** as described in [NOTICE](NOTICE).
